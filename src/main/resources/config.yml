@@ -7,7 +7,7 @@ ConfigVersion: 1.1
 #自动检查更新功能 强烈建议开启！！！
 #自动检查更新，若发现此版本存在重大BUG（如刷物品、卡服之类的）会自动停用本插件，并提醒升级至最新版
 #同时提醒你更新插件
-checkupdate: true
+checkupdate: false
 
 #插件聊天栏前缀
 prefix: §b[VoteReboot]
