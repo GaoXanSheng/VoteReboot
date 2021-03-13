@@ -219,10 +219,11 @@ public class VoteReboot extends JavaPlugin {
                     if (!(s.equals("空玩家233333333标志@!=~&*^"))) real++;
                 }
                 VotedPlayer[real + 1] = PlayerName;
+                //修复投票时有人退出投票失效的bug
                 if (!getCS("checkplayer").equals("true"))
-                    sendGlobalMessage("§e" + PlayerName + " §a进行了投票 本服共§e" + OnlinePlayers + "§a人在线，共需要§e" + NeedPlayers + "§a人投票 目前票数：§e" + (real + 1));
+                    sendGlobalMessage("§e" + PlayerName + " §a进行了投票 本服共§e" + OnlinePlayers + "§a人在线，共需要§e" + getNeedPlayers() + "§a人投票 目前票数：§e" + (real+1));
                 else
-                    sendGlobalMessage("§e" + PlayerName + " §a进行了投票 本服共§e" + OnlinePlayers + "§a人在线，共需要§e" + NeedPlayers + "§a人投票（不包含正在挂机的玩家） 目前票数：§e" + (real + 1));
+                    sendGlobalMessage("§e" + PlayerName + " §a进行了投票 本服共§e" + OnlinePlayers + "§a人在线，共需要§e" + getNeedPlayers() + "§a人投票（不包含正在挂机的玩家） 目前票数：§e" + (real + 1));
             }
         }
         if (real + 1 == getNeedPlayers()) {
@@ -236,6 +237,10 @@ public class VoteReboot extends JavaPlugin {
                     if (isRebooting) {
                         sendGlobalMessage("服务器将在" + rs + "秒后重启！");
                         rs--;
+                        if(rs==-5) {
+                            sendGlobalMessage("有人中途退出，投票失败");
+                            this.cancel();
+                        }
                     } else {
                         sendGlobalMessage("管理员取消了本次重启！");
                         this.cancel();
@@ -331,7 +336,7 @@ public class VoteReboot extends JavaPlugin {
                                         cancel();
                                         this.cancel();
                                     }
-                                    else sendGlobalMessage("投票将在"+vs+"分钟后结束！");
+                                    else sendGlobalMessage("投票将在"+vs+"分钟后结束！"+"请同意重启的玩家输入/voteaccept");
                                 }else {this.cancel();}
                             }
                         }.runTaskTimerAsynchronously(this, 1200L, 1200L);//参数是,主类、延迟、多少秒运行一次,比如5秒那就是5*20L
@@ -355,6 +360,8 @@ public class VoteReboot extends JavaPlugin {
             cancel();
             sendPlayerMessage(sender, "已经取消当前所有操作");
             if(isVoting) sendGlobalMessage("本次投票被管理员结束！");
+            isVoting =true; // 修复取消投票时之前的投票倒计时还存在
+             vs = 1;
         }
         if (label.equalsIgnoreCase("votereboot")){
             if(args.length>0 && sender.isOp()) {
