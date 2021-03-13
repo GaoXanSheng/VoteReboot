@@ -24,7 +24,7 @@ public class VoteReboot extends JavaPlugin {
     public static Boolean ipcheck;
     public static boolean isRebooting = false;
     public static int rs = 0;
-    public static int time = 3;
+    public static int vs = 3;
     public static boolean cancel = false;
     public static boolean notice;
     public static boolean reload=false;
@@ -316,7 +316,6 @@ public class VoteReboot extends JavaPlugin {
                         VotedPlayer[0] = sender.getName();
                         String IP = String.valueOf(((Player) sender).getAddress().getAddress());
                         IPMap.put(IP, true);
-                        time=3;  //防止负数
                         sendGlobalMessage("§e" + sender.getName() + " §a发起了投票重启 本服共§e" + OnlinePlayers + "§a人在线，需要§e" + getNeedPlayers() + "§a人投票 目前票数：§e1");
                         sendGlobalMessage("请同意重启的玩家输入/voteaccept");
                         sendGlobalMessage("本次投票在3分钟内有效");
@@ -324,14 +323,13 @@ public class VoteReboot extends JavaPlugin {
                             @Override
                             public void run() {
                                 if(isVoting){
-                                	time--;
-                                    if(time==0){
+                                    vs--;
+                                    if(vs==0){
                                         sendGlobalMessage("本次重启投票已经过期");
-                                        isVoting=false; //修复投票不结束
                                         cancel();
                                         this.cancel();
                                     }
-                                    else sendGlobalMessage("投票将在"+time+"分钟后结束！");
+                                    else sendGlobalMessage("投票将在"+vs+"分钟后结束！");
                                 }else {this.cancel();}
                             }
                         }.runTaskTimerAsynchronously(this, 1200L, 1200L);//参数是,主类、延迟、多少秒运行一次,比如5秒那就是5*20L
@@ -389,8 +387,8 @@ public class VoteReboot extends JavaPlugin {
                 sender.sendMessage("§3/votereboot reload 重载插件");
                 sender.sendMessage("§3/votereboot now 立刻重启");
                 sender.sendMessage("§3/votereboot bug 反馈BUG");
-                sender.sendMessage("§3插件作者：甲甲");
                 sender.sendMessage("§3bug修复：by Yun_Nan");
+                sender.sendMessage("§3插件作者：甲甲");
                 sender.sendMessage("§3若出现任何BUG");
                 sender.sendMessage("§3请输入/votereboot bug");
                 sender.sendMessage("§b----------§eVoteReboot 菜单§b----------");
