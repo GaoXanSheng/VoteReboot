@@ -226,7 +226,8 @@ public class VoteReboot extends JavaPlugin {
                     sendGlobalMessage("§e" + PlayerName + " §a进行了投票 本服共§e" + OnlinePlayers + "§a人在线，共需要§e" + getNeedPlayers() + "§a人投票（不包含正在挂机的玩家） 目前票数：§e" + (real + 1));
             }
         }
-        if (real + 1 == getNeedPlayers()) {
+        if (real + 1 == getNeedPlayers()||real + 1>getNeedPlayers()) {
+        	// 修复小概率会投票数量大于目前票数不重启的bug
             sendGlobalMessage("投票已经完成！服务器将在十秒后重启！");
             isVoting = false;
             isRebooting = true;
